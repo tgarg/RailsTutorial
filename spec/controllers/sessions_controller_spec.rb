@@ -35,5 +35,23 @@ describe SessionsController do
   			flash.now[:error].should =~ /invalid/i
   		end
   	end
+    describe "successful signin" do
+
+      before(:each) do
+        @user = Factory(:user)
+        @attr = { :email => @user.email, :password => @user.password }
+      end
+
+      it "should signin the user" do
+        post :create, :session => @attr
+        controller.current_user.should == @user
+        controller.should be_signed_in
+      end
+
+      it "should redirect to the user's profile page" do
+        post :create, :session => @attr
+        response.should redirect_to(user_path(@user))
+      end
+    end
   end
 end
