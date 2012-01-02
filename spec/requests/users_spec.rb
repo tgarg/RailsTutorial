@@ -20,17 +20,17 @@ describe "Users" do
 			it "Should make a new user" do
 				lambda do
 					visit signup_path
-  				fill_in "Name",					:with => "Example"
-  				fill_in "Email",				:with => "example@aol.com"
-  				fill_in "Password", 			:with => "foobar"
-	  			fill_in "Confirmation", 		:with => "foobar"
-	  			click_button
-	  			response.should have_selector("div.flash.success",
-	  										  :content => "Welcome")
-	  		  response.should render_template(:show)
-	  		end.should change(User, :count).by(1)
+	  				fill_in "Name",					:with => "Example"
+	  				fill_in "Email",				:with => "example@aol.com"
+	  				fill_in "Password", 			:with => "foobar"
+		  			fill_in "Confirmation", 		:with => "foobar"
+		  			click_button
+		  			response.should have_selector("div.flash.success",
+		  										  :content => "Welcome")
+		  			response.should render_template(:show)
+	  			end.should change(User, :count).by(1)
+	  		end
 	  	end
-	  end
 	end
 	describe "signin/out" do
 		describe "failure" do
@@ -45,11 +45,7 @@ describe "Users" do
 		end
 		describe "success" do
 			it "should sign in a user" do
-				user = Factory(:user)
-				visit signin_path
-				fill_in	"Email",		:with => user.email
-				fill_in "Password", 	:with => user.password
-				click_button
+				integration_sign_in(Factory(:user))
 				controller.should be_signed_in
 				click_link "Sign out"
 				controller.should_not be_signed_in
