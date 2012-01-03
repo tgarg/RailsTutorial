@@ -147,6 +147,25 @@ describe UsersController do
     end
   end
 
+  describe "authentication of user edit/update pages" do
+
+    before(:each) do
+      @user = Factory(:user)
+    end
+
+    describe "for non-signed in users" do
+      it "should deny access to 'edit'" do
+        get :edit, :id => @user.id
+        response.should redirect_to(signin_path)
+        flash[:notice].should =~ /sign in/i
+      end
+
+      it "should deny access to 'update'" do
+        put :update, :id => @user.id, :user => { }
+        response.should redirect_to(signin_path)
+      end
+    end
+  end
   describe "POST 'create'" do
     
     describe "failure" do
