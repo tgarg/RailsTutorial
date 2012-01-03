@@ -27,12 +27,16 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
+    # Originally this line needed to be here, but since I added the before_filter,
+    # the line has been moved to the method below in the private section, since
+    # everything in that method is executed before the contents of this method
+    # ----------------------------------
+    # @user = User.find(params[:id])
     @title = "Edit user"
   end
 
   def update
-    @user = User.find(params[:id])
+    # @user = User.find(params[:id])
     if @user.update_attributes(params[:user])
       redirect_to user_path(@user.id)
       flash.now[:success] = "Profile updated successfully!"
@@ -51,5 +55,12 @@ class UsersController < ApplicationController
   def correct_user
     @user = User.find(params[:id])
     redirect_to(root_path, :notice => "Access denied.") unless current_user?(@user)
+    # Below is a more verbose way of accomplishing the same as the above line
+    # -----------------------------
+    # if current_user?(@user)
+    # else
+    #   redirect_to(root_path)
+    #   flash[:notice] = "Access denied."
+    # end
   end
 end
