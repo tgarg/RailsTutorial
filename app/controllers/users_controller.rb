@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   	if @user.save
       sign_in(@user)
   		flash[:success] = "Welcome to the Sample App!"
-  		redirect_to @user
+  		redirect_to user_path(@user.id)
   	else
   		@title = "Sign up"
   		render :new
@@ -23,4 +23,19 @@ class UsersController < ApplicationController
   	@title = @user.name
   end
 
+  def edit
+    @user = User.find(params[:id])
+    @title = "Edit user"
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(params[:user])
+      redirect_to user_path(@user.id)
+      flash.now[:success] = "Profile updated successfully!"
+    else   
+      @title = "Edit user" 
+      render :edit
+    end
+  end
 end
