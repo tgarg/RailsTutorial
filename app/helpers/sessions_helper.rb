@@ -9,11 +9,11 @@ module SessionsHelper
 		cookies.delete(:remember_token)
 		self.current_user = nil
 	end
-
+	# Setter method for the current user
 	def current_user=(user)
 		@current_user = user
 	end
-
+	# This is the getter method
 	def current_user
 		@current_user ||= user_from_remember_token
 	end
