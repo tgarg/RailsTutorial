@@ -36,7 +36,7 @@ describe UsersController do
       it "should have an element for each user" do
         get :index
         User.all.each do |user|
-          response.shoud have_selector('li', :content => user.name)
+          response.should have_selector('li', :content => user.name)
         end
       end
     end
