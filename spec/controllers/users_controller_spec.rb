@@ -21,6 +21,10 @@ describe UsersController do
         second = Factory(:user, :name => 'Bobjones', :email => 'retarded@gmail.com')
         third = Factory(:user, :name => "bobby", :email => "thisist@gmail.com")
         @users = [@user, second, third]
+
+        30.times do
+          Factory(:user, :email => Factory.next(:email))
+        end
       end
 
       it "should be successful" do
@@ -35,9 +39,14 @@ describe UsersController do
 
       it "should have an element for each user" do
         get :index
-        User.all.each do |user|
+        User.paginate(:page => 1).each do |user|
           response.should have_selector('li', :content => user.name)
         end
+      end
+
+      it "should paginate users" do
+        get :index
+        response.should have_selector('div.pagination')
       end
     end
   end
