@@ -130,6 +130,20 @@ describe UsersController do
       get :new
       response.should have_selector("input#user_password_confirmation")
     end
+
+    describe "for signed in users" do
+
+      before(:each) do
+        @user = Factory(:user)
+        test_sign_in(@user)
+      end
+      
+      it "should redirect to the root path if trying to sign up" do
+        get :new
+        response.should redirect_to(root_path)
+      end
+    end
+
   end
 
   describe "GET 'edit'"do
