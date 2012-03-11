@@ -31,6 +31,8 @@ GEM
       multi_json (~> 1.0)
     annotate (2.4.0)
     arel (2.2.1)
+    autotest-growl (0.2.16)
+    autotest-standalone (4.5.9)
     builder (3.0.0)
     coffee-rails (3.1.1)
       coffee-script (>= 2.2.0)
@@ -144,6 +146,8 @@ PLATFORMS
 
 DEPENDENCIES
   annotate (= 2.4.0)
+  autotest-growl
+  autotest-standalone
   coffee-rails (~> 3.1.1)
   factory_girl_rails (= 1.0)
   faker (= 0.3.1)
