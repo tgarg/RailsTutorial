@@ -1,0 +1,3 @@
+require 'autotest/growl'
+Autotest::Growl::show_modified_files = true
+Autotest::Growl::sticky_failure_notifications = true

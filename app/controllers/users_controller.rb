@@ -83,7 +83,9 @@ class UsersController < ApplicationController
   end
 
   def signed_in
-    redirect_to(root_path) unless !signed_in?
-    flash[:notice] = "You're already signed in dummy!"
+    if signed_in?
+      redirect_to(root_path)
+      flash[:notice] = "You're already signed in dummy!"
+    end
   end
 end
