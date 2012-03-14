@@ -46,3 +46,9 @@ group :test do
   gem 'autotest-standalone'
   gem 'autotest-growl'
 end
+
+group :production do
+  # gems specifically for Heroku go here
+  gem "pg"
+end
+
