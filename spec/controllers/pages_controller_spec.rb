@@ -18,6 +18,40 @@ describe PagesController do
       response.should have_selector("title",
                                     :content => @base_title + "Home")
     end
+
+    describe "for signed-in users" do
+
+      before(:each) do
+        @user=Factory(:user)
+        test_sign_in(@user)
+        @micropost=Factory(:micropost, :user => @user)
+      end
+
+      it "should have the micropost count in the sidebar" do
+        get 'home'
+        response.should have_selector('span.microposts')
+      end
+
+      it "should not be plural for one micropost" do
+        get 'home'
+        response.should have_selector('span.microposts', :content => 'micropost')
+      end
+
+      it "should properly pluralize the micropost count" do
+        Factory(:micropost, :user => @user)
+        get 'home'
+        response.should have_selector('span.microposts', :content => 'microposts')
+      end
+      
+      it "should paginate the microposts" do
+        35.times do
+          Factory(:micropost, :user => @user)
+        end
+        get 'home'
+        response.should have_selector('div.pagination')
+      end
+    end
+
   end
 
   describe "GET 'contact'" do

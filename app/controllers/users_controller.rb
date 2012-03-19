@@ -29,8 +29,9 @@ class UsersController < ApplicationController
   end
 
   def show
-  	@user = User.find(params[:id])
-  	@title = @user.name
+    @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(:page => params[:page])
+    @title = @user.name
   end
 
   def edit
@@ -61,10 +62,6 @@ class UsersController < ApplicationController
 
   private
 
-  def authenticate
-    deny_access unless signed_in?
-  end
-
   def correct_user
     @user = User.find(params[:id])
     redirect_to(root_path, :notice => "Access denied.") unless current_user?(@user)
@@ -83,7 +80,9 @@ class UsersController < ApplicationController
   end
 
   def signed_in
-    redirect_to(root_path) unless !signed_in?
-    flash[:notice] = "You're already signed in dummy!"
+    if signed_in?
+      redirect_to(root_path)
+      flash[:notice] = "You're already signed in dummy!"
+    end
   end
 end
