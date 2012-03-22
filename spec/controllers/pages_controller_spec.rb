@@ -8,15 +8,19 @@ describe PagesController do
   end
 
   describe "GET 'home'" do
-    it "should be successful" do
-      get 'home'
-      response.should be_success
-    end
 
-    it "should have the right title" do
-      get 'home'
-      response.should have_selector("title",
-                                    :content => @base_title + "Home")
+    describe "for non-signed in users" do
+      
+      it "should be successful" do
+        get 'home'
+        response.should be_success
+      end
+
+      it "should have the right title" do
+        get 'home'
+        response.should have_selector("title",
+                                      :content => @base_title + "Home")
+      end
     end
 
     describe "for signed-in users" do
@@ -24,6 +28,8 @@ describe PagesController do
       before(:each) do
         @user=Factory(:user)
         test_sign_in(@user)
+        other_user=Factory(:user, :email => Factory.next(:email))
+        other_user.follow!(@user)
         @micropost=Factory(:micropost, :user => @user)
       end
 
@@ -50,8 +56,15 @@ describe PagesController do
         get 'home'
         response.should have_selector('div.pagination')
       end
-    end
 
+      it "should have the right follower/following counts" do
+        get 'home'
+        response.should have_selector("a", :href => following_user_path(@user),
+                                      :content => "0 following")
+        response.should have_selector("a", :href => followers_user_path(@user),
+                                      :content => "1 follower")
+      end
+    end
   end
 
   describe "GET 'contact'" do
